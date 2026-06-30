@@ -1,5 +1,7 @@
 # siftingio-mcp
 
+[![siftingio-mcp MCP server](https://glama.ai/mcp/servers/SiftingIO/siftingio-mcp/badges/score.svg)](https://glama.ai/mcp/servers/SiftingIO/siftingio-mcp)
+
 This is a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server
 that puts the [SiftingIO market-data SDK](https://github.com/SiftingIO/sdk-typescript)
 (`@siftingio/sdk`) in reach of your AI assistant. Once it's running, the model can
