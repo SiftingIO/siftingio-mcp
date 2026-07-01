@@ -15,7 +15,12 @@ export function registerFilersTools(server: McpServer): void {
       inputSchema: {
         filer: z.string().describe("Institutional filer's CIK (numeric) or ticker."),
         cursor: z.string().optional().describe("Opaque cursor from a previous response's meta.next_cursor."),
-        limit: z.number().int().positive().optional().describe("Page size (endpoint default applies if omitted)."),
+        limit: z
+          .number()
+          .int()
+          .positive()
+          .optional()
+          .describe("Page size (endpoint default applies if omitted)."),
       },
     },
     ({ filer, ...params }) => getClient().filers.holdings(filer, params),
