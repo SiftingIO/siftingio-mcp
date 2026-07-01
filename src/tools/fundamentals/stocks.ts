@@ -40,7 +40,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_search",
     {
       title: "Search stocks",
-      description: "Ticker/company lookup by ticker, name, or CIK substring.",
+      description:
+        "Search the US equity universe by ticker, company name, or CIK substring, returning matching companies with their ticker, name, and CIK. Start here to resolve a name or partial symbol into the exact ticker the other stocks_* tools require. Returns structuredContent alongside the text.",
       inputSchema: {
         q: z.string().describe("Search string: ticker, company name, or CIK substring."),
         limit: z.number().int().positive().max(100).optional().describe("Max results, default 25, max 100."),
@@ -55,7 +56,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_profile",
     {
       title: "Company profile",
-      description: "Company profile assembled from SEC submissions metadata.",
+      description:
+        "Fetch a company's reference profile — name, CIK, SIC/industry, exchange, and address — assembled from SEC EDGAR submissions metadata. Use it for company identity details; for financial statements use stocks_financials and for the filing history use stocks_filings. Returns structuredContent alongside the text.",
       inputSchema: { ticker },
       outputSchema: companyProfileOutput,
     },
@@ -67,7 +69,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_filings",
     {
       title: "List filings",
-      description: "Paginated SEC filings list for a company.",
+      description:
+        "List a company's SEC EDGAR filings (most recent first), optionally filtered by form type and filed-date range. Paginate with cursor/limit, or set max_items to auto-collect across pages in one call. Returns filing metadata and accession numbers; pass an accession to stocks_filing for its document list, or to stocks_sections / stocks_section for its extracted text.",
       inputSchema: {
         ticker,
         form: z.string().optional().describe('Comma-separated exact form types, e.g. "10-K,10-Q".'),
@@ -89,7 +92,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_filing",
     {
       title: "Filing detail",
-      description: "A single filing's detail, including its document file list.",
+      description:
+        "Fetch one SEC filing's detail — header metadata plus its list of document files — identified by ticker and accession number. Get accession numbers from stocks_filings; for the filing's extracted narrative text use stocks_sections (all sections) or stocks_section (one section's body).",
       inputSchema: { ticker, accession },
     },
     ({ ticker, accession }) => getClient().stocks.filing(ticker, accession),
@@ -100,7 +104,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_sections",
     {
       title: "Filing sections",
-      description: "All extracted text sections of a filing.",
+      description:
+        "Fetch every extracted narrative section of one SEC filing at once — e.g. business, risk-factors, mda, legal-proceedings — each with its section code and full text, identified by ticker and accession. Use this to pull a whole filing's readable text; when you only need one section, stocks_section returns far less. Large filings may be size-capped (watch for the _truncated note). Get accession numbers from stocks_filings.",
       inputSchema: { ticker, accession },
     },
     ({ ticker, accession }) => getClient().stocks.sections(ticker, accession),
@@ -111,7 +116,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_section",
     {
       title: "Filing section text",
-      description: "One extracted section's full text.",
+      description:
+        "Fetch the full text of a single narrative section from one SEC filing, selected by section code (e.g. business, risk-factors, mda). Prefer this over stocks_sections when you need just one section — it returns far less text. Discover the available section codes with stocks_sections and get accession numbers from stocks_filings.",
       inputSchema: {
         ticker,
         accession,
@@ -128,7 +134,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_risk_factors_diff",
     {
       title: "Risk-factors diff",
-      description: "Year-over-year risk-factor (Item 1A) diff between two 10-Ks.",
+      description:
+        "Compute the year-over-year diff of a company's risk factors (10-K Item 1A), highlighting added, removed, and changed language between its two most recent annual reports. Use it to see how disclosed risks evolved; for the raw text use stocks_section with section 'risk-factors'.",
       inputSchema: { ticker },
     },
     ({ ticker }) => getClient().stocks.riskFactorsDiff(ticker),
@@ -139,7 +146,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_ratios",
     {
       title: "Financial ratios",
-      description: "Fundamental ratios (latest period plus full history).",
+      description:
+        "Fetch a company's fundamental financial ratios (valuation, profitability, liquidity, leverage) for the latest reporting period plus the full historical series, derived from its XBRL financials. For raw statement line items use stocks_financials or stocks_financial_concept.",
       inputSchema: { ticker },
     },
     ({ ticker }) => getClient().stocks.ratios(ticker),
@@ -150,7 +158,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_earnings",
     {
       title: "Earnings history",
-      description: "Earnings-release history (8-K item 2.02).",
+      description:
+        "List a company's earnings-release history, sourced from 8-K Item 2.02 filings, most recent first. Paginate with cursor/limit, or set max_items to auto-collect across pages. For all 8-K material events (not just earnings) use stocks_events.",
       inputSchema: { ticker, cursor, limit, max_items: maxItems },
     },
     ({ ticker, max_items, cursor, ...params }) =>
@@ -164,7 +173,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_financials",
     {
       title: "XBRL financials",
-      description: "Full XBRL financials bundle for a company (all concepts and periods).",
+      description:
+        "Fetch a company's complete XBRL financials bundle — every reported concept across every period — from its SEC filings. This is a large payload and may be size-capped (watch for the _truncated note); for a single line item's time series use stocks_financial_concept, and for computed ratios use stocks_ratios.",
       inputSchema: { ticker },
     },
     ({ ticker }) => getClient().stocks.financials(ticker),
@@ -175,7 +185,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_financial_concept",
     {
       title: "Financial concept series",
-      description: "One XBRL concept's full reported time series for a company.",
+      description:
+        "Fetch the full reported time series for one XBRL concept (e.g. Revenues, NetIncomeLoss) for a single company. Use this instead of stocks_financials when you need one line item rather than the whole statement bundle; to screen the same concept across all companies use stocks_screener.",
       inputSchema: {
         ticker,
         concept: z.string().describe("XBRL concept name, e.g. Revenues, NetIncomeLoss."),
@@ -190,7 +201,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_insiders",
     {
       title: "Insider transactions",
-      description: "Form 3/4/5 insider transactions (limit default 10, max 25).",
+      description:
+        "List a company's insider transactions from SEC Form 3/4/5 filings (officers, directors, 10% owners), most recent first. Paginate with cursor/limit (default 10, max 25), or set max_items to auto-collect across pages. For large outside stakeholders (13D/13G) use stocks_ownership.",
       inputSchema: { ticker, cursor, limit, max_items: maxItems },
     },
     ({ ticker, max_items, cursor, ...params }) =>
@@ -204,7 +216,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_ownership",
     {
       title: "Ownership filings",
-      description: "Schedule 13D/13G beneficial-ownership filings.",
+      description:
+        "List a company's Schedule 13D/13G beneficial-ownership filings (holders of large stakes), most recent first. Paginate with cursor/limit, or set max_items to auto-collect across pages. For officer/director trades use stocks_insiders; for institutional 13F positions use filers_holdings.",
       inputSchema: { ticker, cursor, limit, max_items: maxItems },
     },
     ({ ticker, max_items, cursor, ...params }) =>
@@ -218,7 +231,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_events",
     {
       title: "Material events",
-      description: "8-K material events, optionally filtered by item code.",
+      description:
+        "List a company's 8-K material-event filings, optionally filtered to a single item code (e.g. 2.02). Most recent first; paginate with cursor/limit, or set max_items to auto-collect across pages. For earnings releases specifically use stocks_earnings.",
       inputSchema: {
         ticker,
         item: z.string().optional().describe('Filter by 8-K item code, e.g. "2.02".'),
@@ -238,7 +252,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_compensation",
     {
       title: "Compensation filings",
-      description: "DEF 14A proxy/compensation filings.",
+      description:
+        "List a company's DEF 14A proxy statements, which cover executive compensation and shareholder-vote matters, most recent first. Paginate with cursor/limit, or set max_items to auto-collect across pages.",
       inputSchema: { ticker, cursor, limit, max_items: maxItems },
     },
     ({ ticker, max_items, cursor, ...params }) =>
@@ -252,7 +267,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_screener",
     {
       title: "Fundamentals screener",
-      description: "Cross-sectional screener: one concept/period across all filers.",
+      description:
+        "Screen one XBRL concept for a single fiscal period across all filers at once (e.g. Revenues for FY2023), returning each company's reported value. This is the cross-sectional counterpart to stocks_financial_concept, which returns one company's series over time. Paginate with cursor/limit.",
       inputSchema: {
         concept: z.string().describe("XBRL concept name, e.g. Revenues."),
         period: z.string().describe("Fiscal period, e.g. FY2023 or 2023Q4 (as documented)."),
@@ -270,7 +286,8 @@ export function registerStocksTools(server: McpServer): void {
     "stocks_bars",
     {
       title: "Stock OHLCV bars",
-      description: "Historical OHLCV bars for a US equity.",
+      description:
+        "Fetch historical OHLCV bars for a US equity over a date/time range at a chosen interval (default 1m). Large ranges are size-capped (watch for the _truncated note) — narrow the window or paginate with cursor/limit. For a live price snapshot use last_trade or last_quote instead.",
       inputSchema: {
         ticker,
         start: z

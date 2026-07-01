@@ -11,7 +11,8 @@ export function registerDexTools(server: McpServer): void {
     "dex_wallet",
     {
       title: "DEX wallet portfolio",
-      description: "Token holdings for a wallet on an EVM chain.",
+      description:
+        "Fetch the current token holdings — balances and identified tokens — for a wallet address on an EVM chain (e.g. ethereum, base). Both chain and address are required. For a DEX pair's pooled liquidity use last_tvl.",
       inputSchema: {
         chain: z.string().describe(`EVM chain: ${CHAINS.join(", ")}.`),
         address: z.string().describe("Wallet address, e.g. 0x...."),

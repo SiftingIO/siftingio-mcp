@@ -11,7 +11,8 @@ export function registerEconomicTools(server: McpServer): void {
     "economic_calendar_list",
     {
       title: "Economic calendar",
-      description: "Upcoming and released macro economic events (actual/previous/consensus).",
+      description:
+        "List scheduled and released macroeconomic events (e.g. CPI, non-farm payrolls, rate decisions) over a date range, each with its actual, previous, and consensus figures. Filter by country, impact level, issuing agency, or a specific recurring event_id. Defaults to the US and roughly the next 30 days.",
       inputSchema: {
         from: z.string().optional().describe("Lower bound, YYYY-MM-DD or RFC3339. Default: now."),
         to: z.string().optional().describe("Upper bound, YYYY-MM-DD or RFC3339. Default: from + 30 days."),

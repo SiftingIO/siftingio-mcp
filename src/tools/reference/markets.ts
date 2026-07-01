@@ -17,7 +17,8 @@ export function registerMarketsTools(server: McpServer): void {
     "markets_list",
     {
       title: "List markets",
-      description: "List all supported markets in the catalog.",
+      description:
+        "List every market in the catalog — exchanges and asset classes such as nyse, us_equities, forex, crypto — optionally filtered by region. Use it to discover the market slug the other markets_* tools expect.",
       inputSchema: { region },
     },
     (params) => getClient().markets.list(params),
@@ -28,7 +29,8 @@ export function registerMarketsTools(server: McpServer): void {
     "markets_status_all",
     {
       title: "All market statuses",
-      description: "Open/closed snapshot for every market.",
+      description:
+        "Return the current open/closed status for every market at once, optionally filtered by region. Use markets_status when you already know the single market slug you care about.",
       inputSchema: { region },
     },
     (params) => getClient().markets.statusAll(params),
@@ -39,7 +41,8 @@ export function registerMarketsTools(server: McpServer): void {
     "markets_status",
     {
       title: "Market status",
-      description: "Open/closed snapshot for one market.",
+      description:
+        "Return the current open/closed status for a single market by slug (e.g. nyse). For a snapshot across all markets use markets_status_all; for the recurring weekly schedule use markets_hours.",
       inputSchema: { market },
     },
     ({ market }) => getClient().markets.status(market),
@@ -50,7 +53,8 @@ export function registerMarketsTools(server: McpServer): void {
     "markets_hours",
     {
       title: "Market hours",
-      description: "Weekly trading-hours schedule for a market.",
+      description:
+        "Return the regular weekly trading-hours schedule (open/close times per weekday, with time zone) for a market by slug. This is the recurring schedule, not today's state — use markets_status for whether it's open right now, and markets_calendar for holidays and half-days.",
       inputSchema: { market },
     },
     ({ market }) => getClient().markets.hours(market),
@@ -61,7 +65,8 @@ export function registerMarketsTools(server: McpServer): void {
     "markets_calendar",
     {
       title: "Market calendar",
-      description: "Holiday/half-day calendar for a market over a date range.",
+      description:
+        "List the holidays and half-day (early-close) sessions for a market over a date range (defaults to the next ~90 days, max 730). Use markets_hours for the normal weekly schedule and markets_status for the live open/closed state.",
       inputSchema: {
         market,
         from: z.string().optional().describe("Inclusive lower bound, YYYY-MM-DD. Default: today."),

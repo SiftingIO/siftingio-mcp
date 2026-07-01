@@ -32,7 +32,8 @@ export function registerWsTools(server: McpServer): void {
     "ws_unsubscribe",
     {
       title: "Unsubscribe from live stream",
-      description: "Stop receiving symbols on a channel. Returns current connection status.",
+      description:
+        "Stop receiving the given symbols on a channel; the WebSocket stays open for any remaining subscriptions. Returns current connection status. Pair with ws_subscribe; to close the connection entirely use ws_disconnect.",
       inputSchema: { product, symbols },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
@@ -99,7 +100,8 @@ export function registerWsTools(server: McpServer): void {
     "ws_status",
     {
       title: "Live stream status",
-      description: "Report connection state, active subscriptions, buffered frame count, and the last error.",
+      description:
+        "Report the live stream's connection state, active subscriptions, buffered frame count, and last error, without opening a connection or consuming buffered frames. Use it to check what's subscribed before ws_poll; read buffered ticks with ws_poll.",
       inputSchema: {},
       annotations: { readOnlyHint: true, openWorldHint: false },
     },
@@ -111,7 +113,8 @@ export function registerWsTools(server: McpServer): void {
     "ws_disconnect",
     {
       title: "Disconnect live stream",
-      description: "Close the WebSocket, clear all subscriptions and the buffer.",
+      description:
+        "Close the live WebSocket and clear all subscriptions and the buffered frames. Use this to tear everything down; to drop only some symbols while keeping the connection open use ws_unsubscribe. Idempotent — safe to call when already disconnected.",
       inputSchema: {},
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },

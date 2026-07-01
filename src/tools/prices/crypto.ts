@@ -12,7 +12,7 @@ export function registerCryptoTools(server: McpServer): void {
     {
       title: "Crypto OHLCV bars",
       description:
-        "Historical OHLCV bars for a USD-quoted crypto symbol (e.g. BTCUSD). Volume is fractional base-asset volume.",
+        "Fetch historical OHLCV bars for a USD-quoted crypto symbol (e.g. BTCUSD) over a time range at a chosen interval (default 1m); volume is fractional base-asset volume. Large ranges are size-capped (watch for the _truncated note) — narrow the range or paginate with cursor/limit (max 5000/page). For the current price use last_trade.",
       inputSchema: {
         symbol: z.string().describe("USD-quoted crypto symbol, e.g. BTCUSD."),
         start: z.string().describe("Inclusive lower bound, YYYY-MM-DD or RFC3339 (UTC). Required."),

@@ -15,7 +15,7 @@ export function registerLastTools(server: McpServer): void {
     {
       title: "Last trade",
       description:
-        "Latest trade snapshot (price + size) for a symbol on a venue. Read straight from the live engine; never cached.",
+        "Latest trade snapshot (price and size) for a symbol on a venue, read straight from the live engine and never cached. For the best bid/ask instead use last_quote; for historical bars use stocks_bars / crypto_bars / forex_bars. Returns structuredContent alongside the text.",
       inputSchema: {
         venue,
         symbol: z.string().describe("Symbol, e.g. BTCUSD, AAPL, EURUSD."),
@@ -30,7 +30,8 @@ export function registerLastTools(server: McpServer): void {
     "last_quote",
     {
       title: "Last quote",
-      description: "Top-of-book quote (best bid/ask with sizes) for a symbol on a venue.",
+      description:
+        "Top-of-book quote — best bid and ask with their sizes — for a symbol on a venue, read live from the engine and never cached. For the last traded price use last_trade instead. Returns structuredContent alongside the text.",
       inputSchema: {
         venue,
         symbol: z.string().describe("Symbol, e.g. BTCUSD, AAPL, EURUSD."),
@@ -45,7 +46,8 @@ export function registerLastTools(server: McpServer): void {
     "last_tvl",
     {
       title: "Last DEX TVL",
-      description: "Aggregated total value locked (TVL) for a DEX pair on a chain.",
+      description:
+        "Current aggregated total value locked (TVL) for a DEX trading pair on an EVM chain, read live. Provide the canonical pair (e.g. WETH-USDC); for a wallet's token balances use dex_wallet. Returns structuredContent alongside the text.",
       inputSchema: {
         chain: z.string().describe(`EVM chain: ${CHAINS.join(", ")}.`),
         pair: z.string().describe("Canonical pair, e.g. WETH-USDC."),

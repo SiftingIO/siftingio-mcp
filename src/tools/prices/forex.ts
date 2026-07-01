@@ -12,7 +12,7 @@ export function registerForexTools(server: McpServer): void {
     {
       title: "Forex OHLC bars",
       description:
-        "Historical OHLC bars for a 6-char FX pair (e.g. EURUSD). Volume is always 0 for OTC spot forex.",
+        "Fetch historical OHLC bars for a 6-character FX pair (e.g. EURUSD) over a time range at a chosen interval (default 1m); volume is always 0 for OTC spot forex. Large ranges are size-capped (watch for the _truncated note) — narrow the range or paginate with cursor/limit. For the current rate use last_quote.",
       inputSchema: {
         pair: z.string().describe("6-character FX pair, e.g. EURUSD."),
         start: z.string().describe("Inclusive lower bound, YYYY-MM-DD or RFC3339 (UTC). Required."),
