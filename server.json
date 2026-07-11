@@ -1,0 +1,41 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.sifting/mcp",
+  "description": "Live crypto/forex/metals prices, OHLCV bars, SEC fundamentals, 13F holdings and econ calendar.",
+  "repository": {
+    "url": "https://github.com/SiftingIO/siftingio-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://sifting.io",
+  "version": "1.0.2",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "siftingio-mcp",
+      "version": "1.0.2",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SIFTING_API_KEY",
+          "description": "SiftingIO API key (get one at https://sifting.io)",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "SIFTING_BASE_URL",
+          "description": "Override the REST API base URL",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "SIFTING_WS_URL",
+          "description": "Override the WebSocket URL",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

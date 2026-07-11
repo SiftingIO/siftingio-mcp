@@ -1,6 +1,7 @@
 {
   "name": "siftingio-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "mcpName": "io.sifting/mcp",
   "description": "Model Context Protocol server for the SiftingIO market-data SDK",
   "main": "dist/index.js",
   "bin": {
