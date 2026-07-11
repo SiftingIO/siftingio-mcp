@@ -10,8 +10,17 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SiftingIO/siftingio-mcp.git"
+  },
+  "homepage": "https://sifting.io",
+  "bugs": {
+    "url": "https://github.com/SiftingIO/siftingio-mcp/issues"
+  },
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
     "start": "node --env-file-if-exists=.env dist/index.js",
     "start:http": "node --env-file-if-exists=.env dist/http.js",
     "dev": "node --env-file-if-exists=.env --import tsx src/index.ts",
@@ -29,8 +38,8 @@
     "siftingio",
     "market-data"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "SiftingIO",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
